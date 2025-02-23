@@ -2,25 +2,26 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { WaitingListEntry } from "../lib/definitions";
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { createWaitingListEntry } from '@/app/actions';
 
 export function WaitingList(props: { entries: WaitingListEntry[] }) {
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="top-0 sticky bg-card">
         <TableRow>
-          <TableHead>
-            Number
+          <TableHead className='w-1/12'>
+            Priority
           </TableHead>
-          <TableHead>
+          <TableHead className='w-3/12'>
             Owner
           </TableHead>
-          <TableHead>
+          <TableHead className='w-2/12'>
             Pet
           </TableHead>
-          <TableHead>
+          <TableHead className='w-3/12'>
             Service
           </TableHead>
-          <TableHead>
+          <TableHead className='w-1/12'>
             Arrival
           </TableHead>
         </TableRow>
@@ -60,7 +61,7 @@ export function WaitingListRow({ entry }: { entry: WaitingListEntry }) {
 
 export function WaitingListEntryForm() {
   return (
-    <form className="flex w-full space-x-2">
+    <form action={createWaitingListEntry} className="flex w-full space-x-2">
       <Input type='text' name="owner_name" placeholder="Owner" />
       <Input type='text' name="pet_name" placeholder="Pet Name" />
       <Input type='text' name="service" placeholder="Service" />
