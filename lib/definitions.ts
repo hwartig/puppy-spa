@@ -6,4 +6,5 @@ export type WaitingListEntry = {
   owner_name: string;
   pet_name: string;
   service: string;
+  state: string;
 }

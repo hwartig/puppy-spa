@@ -36,3 +36,18 @@ export async function createWaitingListEntry(formData: FormData) {
   revalidatePath("/");
 }
 
+export async function updateWaitingListEntryState(id: string, state: string) {
+  try {
+    await sql`
+      UPDATE waiting_list_entries
+      SET state = ${state}
+      WHERE id = ${id};
+    `;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to update WaitingListEntry state.');
+  }
+  revalidatePath("/");
+}
+
+

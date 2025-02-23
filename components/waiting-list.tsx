@@ -1,7 +1,9 @@
+"use client"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { WaitingListEntry } from "../lib/definitions";
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { updateWaitingListEntryState } from "@/app/actions";
 import { createWaitingListEntry } from '@/app/actions';
 
 export function WaitingList(props: { entries: WaitingListEntry[] }) {
@@ -11,6 +13,9 @@ export function WaitingList(props: { entries: WaitingListEntry[] }) {
         <TableRow>
           <TableHead className='w-1/12'>
             Priority
+          </TableHead>
+          <TableHead className='w-2/12'>
+            State
           </TableHead>
           <TableHead className='w-3/12'>
             Owner
@@ -36,12 +41,15 @@ export function WaitingList(props: { entries: WaitingListEntry[] }) {
 }
 
 export function WaitingListRow({ entry }: { entry: WaitingListEntry }) {
-  const { number, owner_name, pet_name, arrival_time, service } = entry;
+  const { id, number, owner_name, pet_name, arrival_time, state, service } = entry;
 
   return (
-    <TableRow key={number}>
+    <TableRow key={number} className={state != "waiting" ? "line-through opacity-30" : ""}>
       <TableCell>
         {number}
+      </TableCell>
+      <TableCell>
+        <StateCell id={id} state={state} />
       </TableCell>
       <TableCell>
         {owner_name}
@@ -68,4 +76,17 @@ export function WaitingListEntryForm() {
       <Button type="submit">Add</Button>
     </form>
   );
+}
+
+export function StateCell({ id, state }: { id: string, state: string }) {
+  if (state != 'waiting') {
+    return (<Button variant="ghost" size="sm" onClick={() => updateWaitingListEntryState(id, "waiting")}>{state}</Button>);
+  }
+
+  return (
+    <>
+      <Button variant="ghost" size="sm" onClick={() => updateWaitingListEntryState(id, "done")}>done</Button>
+      <Button variant="ghost" size="sm" onClick={() => updateWaitingListEntryState(id, "left")}>left</Button>
+    </>
+  )
 }

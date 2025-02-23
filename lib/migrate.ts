@@ -16,7 +16,8 @@ async function createWaitingListTable(sql: postgres.TransactionSql<{}>) {
       number INT NOT NULL,
       owner_name VARCHAR(255) NOT NULL,
       pet_name VARCHAR(255) NOT NULL,
-      service VARCHAR(255)
+      service VARCHAR(255),
+      state VARCHAR(20) DEFAULT 'waiting'
     );
   `;
   await sql`CREATE INDEX waiting_list_entries_date_index ON waiting_list_entries (date);`;
