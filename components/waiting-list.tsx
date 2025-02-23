@@ -1,5 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { WaitingListEntry } from "../lib/definitions";
+import { Input } from './ui/input';
+import { Button } from './ui/button';
 
 export function WaitingList(props: { entries: WaitingListEntry[] }) {
   return (
@@ -54,4 +56,15 @@ export function WaitingListRow({ entry }: { entry: WaitingListEntry }) {
       </TableCell>
     </TableRow>
   )
+}
+
+export function WaitingListEntryForm() {
+  return (
+    <form className="flex w-full space-x-2">
+      <Input type='text' name="owner_name" placeholder="Owner" />
+      <Input type='text' name="pet_name" placeholder="Pet Name" />
+      <Input type='text' name="service" placeholder="Service" />
+      <Button type="submit">Add</Button>
+    </form>
+  );
 }

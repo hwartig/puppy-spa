@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { WaitingList } from "@/components/waiting-list";
+import { WaitingList, WaitingListEntryForm } from "@/components/waiting-list";
 import { waitingListEntries } from "@/lib/placeholder-data";
 
 export default function Home() {
@@ -18,11 +18,10 @@ export default function Home() {
           </Link>
         </CardHeader>
         <CardContent>
-          {/* Table */}
           <WaitingList entries={waitingListEntries} />
         </CardContent>
         <CardFooter>
-          {/* Form goes here */}
+          <WaitingListEntryForm />
         </CardFooter>
       </Card >
     </>
