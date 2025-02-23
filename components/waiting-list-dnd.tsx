@@ -1,12 +1,14 @@
 "use client"
+import { GripHorizontal } from 'lucide-react';
+import { useState } from 'react';
+import Link from 'next/link';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { WaitingListEntry } from "../lib/definitions";
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { updateWaitingListEntryOrder, updateWaitingListEntryState } from "@/app/actions";
 import { createWaitingListEntry } from '@/app/actions';
-import { GripHorizontal } from 'lucide-react';
-import { useState } from 'react';
 
 import {
   DndContext,
@@ -26,10 +28,9 @@ import {
 } from '@dnd-kit/sortable';
 
 import { CSS } from '@dnd-kit/utilities';
-import Link from 'next/link';
+import { services } from '@/lib/placeholder-data';
 
 export function WaitingListDND(props: { entries: WaitingListEntry[] }) {
-  // const entries = props.entries;
   const [entries, setEntries] = useState(props.entries);
   const [numbers, setNumbers] = useState(props.entries.map(e => e.id));
 
@@ -151,9 +152,17 @@ export function WaitingListRowDND({ entry }: { entry: WaitingListEntry }) {
 export function WaitingListEntryForm() {
   return (
     <form action={createWaitingListEntry} className="flex w-full space-x-2">
-      <Input type='text' name="owner_name" placeholder="Owner" />
+      <Input type='text' name="owner_name" placeholder="Owner Name" />
       <Input type='text' name="pet_name" placeholder="Pet Name" />
-      <Input type='text' name="service" placeholder="Service" />
+      {/* <Input type='text' name="service" placeholder="Service" /> */}
+      <Select name="service">
+        <SelectTrigger>
+          <SelectValue placeholder="Service" />
+        </SelectTrigger>
+        <SelectContent>
+          {services.map((service) => <SelectItem key={service} value={service}>{service}</SelectItem>)}
+        </SelectContent>
+      </Select>
       <Button type="submit">Add</Button>
     </form>
   );

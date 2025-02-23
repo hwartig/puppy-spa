@@ -5,3 +5,21 @@ export const waitingListEntries = [
   { number: 4, owner_name: "Harry", pet_name: "Peppy", arrival_time: "12:10", service: "Teeth" },
 ];
 
+export const petNames = [
+  "Anna", "Alex", "Bianca", "Baron", "Carly", "Carter", "Dana", "Dodge", "Emmy", "Evan", "Foxy",
+  "Felix", "Georgia", "George", "Holly", "Hank", "Ivy", "Ivan", "Jill", "Jack", "Katie", "King",
+  "Lacy", "Leroy", "Macy", "Milo", "Olivia", "Oscar", "Penny", "Parker", "Riley", "Ranger",
+  "Sally", "Sarge", "Scarlet", "Taco", "Trixie", "Tank", "Winnie", "Woody", "Violet", "Yogi",
+  "Xena", "Zane", "Zoe", "Zeus",
+]
+
+export const ownerNames = [
+  "Amelia", "Andrea", "Ava", "Charlotte", "Elijah", "Emma", "Evelyn", "Harry", "Henry", "Isabella",
+  "James", "Jane", "John", "Liam", "Linda", "Lucas", "Lucy", "Luna", "Mary", "Mateo", "Mia",
+  "Noah", "Oliver", "Olivia", "Paul", "Peter", "Sophia", "Tara", "Theodore", "Tom", "William",
+]
+
+export const services = [
+  "Bath", "Ear Cleaning", "Grooming", "Haircut", "Massage", "Nail Trim", "Other", "Teeth Cleaning",
+  "Vaccination",
+]

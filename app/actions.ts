@@ -21,7 +21,7 @@ export async function fetchWaitingListEntriesForPet(owner_name: string, pet_name
     return await sql<WaitingListEntry[]>`SELECT * FROM waiting_list_entries
         WHERE lower(owner_name) = ${owner_name.trim().toLowerCase()}
           AND lower(pet_name) = ${pet_name.trim().toLowerCase()}
-        ORDER BY number ASC`;
+        ORDER BY date ASC`;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch WaitingListEntries.');

@@ -1,7 +1,7 @@
 import postgres from 'postgres';
 import dayjs from 'dayjs';
 
-import { waitingListEntries } from './placeholder-data.ts';
+import { waitingListEntries, petNames, ownerNames, services } from './placeholder-data.ts';
 
 const sql = postgres(process.env.POSTGRES_URL!);
 
@@ -27,20 +27,23 @@ async function createWaitingListTable(sql: postgres.TransactionSql<{}>) {
 
 async function seedWaitingList(sql: postgres.TransactionSql<{}>) {
   const entries = waitingListEntries.map((entry) => {
-    entry.date = dayjs().format('YYYY-MM-DD');
-    return entry;
+    return {
+      ...entry,
+      date: dayjs().format('YYYY-MM-DD'),
+      state: 'waiting',
+    }
   })
 
-  for (let days = 1; days < 10; days++) {
+  for (let days = 1; days < 30; days++) {
     for (let i = 0; i < 50; i++) {
       entries.push({
-        id: '',
         date: dayjs().subtract(days, 'day').format('YYYY-MM-DD'),
         number: i,
-        arrival_time: "10:00:00",
-        owner_name: `Owner ${i}`,
-        pet_name: `Pet ${i}`,
-        service: '',
+        arrival_time: `10:${i}:${Math.floor(Math.random() * 60)}`,
+        owner_name: ownerNames[Math.floor(Math.random() * ownerNames.length)],
+        pet_name: petNames[Math.floor(Math.random() * petNames.length)],
+        service: services[Math.floor(Math.random() * services.length)],
+        state: ["done", "left"][Math.round(Math.random())],
       });
     }
   }
@@ -48,9 +51,16 @@ async function seedWaitingList(sql: postgres.TransactionSql<{}>) {
   const insertedWaitingListEntries = await Promise.all(
     entries.map(async (entry) => {
       return sql`
-        INSERT INTO waiting_list_entries (date, arrival_time, number, owner_name, pet_name, service)
-        VALUES (${entry.date}, ${entry.arrival_time}, ${entry.number}, ${entry.owner_name}, ${entry.pet_name}, ${entry.service})
-        ON CONFLICT (id) DO NOTHING;
+        INSERT INTO waiting_list_entries (date, arrival_time, number, owner_name, pet_name, service, state)
+        VALUES (
+          ${entry.date},
+          ${entry.arrival_time}, 
+          ${entry.number}, 
+          ${entry.owner_name}, 
+          ${entry.pet_name}, 
+          ${entry.service},
+          ${entry.state}
+        ) ON CONFLICT (id) DO NOTHING;
       `;
     }),
   );

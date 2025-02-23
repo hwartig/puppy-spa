@@ -37,7 +37,7 @@ export function WaitingListRow({ entry }: { entry: WaitingListEntry }) {
   const { id, owner_name, pet_name, arrival_time, state, service } = entry;
 
   return (
-    <TableRow key={id} className={state != "waiting" ? "line-through opacity-30" : ""}>
+    <TableRow key={id}>
       <TableCell>
         {state}
       </TableCell>
