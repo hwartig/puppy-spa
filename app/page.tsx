@@ -2,7 +2,8 @@ import dayjs from 'dayjs';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { WaitingList, WaitingListEntryForm } from "@/components/waiting-list";
+import { WaitingList } from "@/components/waiting-list";
+import { WaitingListDND, WaitingListEntryForm } from "@/components/waiting-list-dnd";
 import { fetchWaitingListEntries } from './actions';
 
 export default async function Home({ searchParams }: {
@@ -40,15 +41,23 @@ export default async function Home({ searchParams }: {
             </Link>
           }
         </CardHeader>
-        <CardContent>
-          <WaitingList key={entriesKey} entries={entries} />
-        </CardContent>
-        <CardFooter>
-          {/* show new entry form only for current day */}
-          {dateStr == dayjs().format("YYYY-MM-DD") && (
-            <WaitingListEntryForm />
-          )}
-        </CardFooter>
+        {/* show new entry form only for current day */}
+        {dateStr == dayjs().format("YYYY-MM-DD") ? (
+          <>
+            <CardContent>
+              <WaitingListDND key={entriesKey} entries={entries} />
+            </CardContent>
+            <CardFooter>
+              <WaitingListEntryForm />
+            </CardFooter>
+          </>
+        ) : (
+          <>
+            <CardContent>
+              <WaitingList key={entriesKey} entries={entries} />
+            </CardContent>
+          </>
+        )}
       </Card >
     </>
   );
