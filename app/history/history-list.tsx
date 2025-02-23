@@ -31,7 +31,7 @@ export function HistoryList(props: { entries: WaitingListEntry[] }) {
 }
 
 export function HistoryListRow({ entry }: { entry: WaitingListEntry }) {
-  const { id, date, pet_name, arrival_time, state, service } = entry;
+  const { date, arrival_time, state, service } = entry;
 
   return (
     <TableRow>

@@ -5,9 +5,9 @@ import { waitingListEntries, petNames, ownerNames, services } from './placeholde
 
 const sql = postgres(process.env.POSTGRES_URL!);
 
-async function createWaitingListTable(sql: postgres.TransactionSql<{}>) {
+async function createWaitingListTable(sql: postgres.TransactionSql) {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`;
-  await sql`DROP TABLE IF EXISTS waiting_list_entries;`;
+  //await sql`DROP TABLE IF EXISTS waiting_list_entries;`;
   await sql`
     CREATE TABLE IF NOT EXISTS waiting_list_entries (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -25,7 +25,7 @@ async function createWaitingListTable(sql: postgres.TransactionSql<{}>) {
 
 }
 
-async function seedWaitingList(sql: postgres.TransactionSql<{}>) {
+async function seedWaitingList(sql: postgres.TransactionSql) {
   const entries = waitingListEntries.map((entry) => {
     return {
       ...entry,
