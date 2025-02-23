@@ -2,6 +2,7 @@
 import { connect } from '@/lib/db';
 import { WaitingListEntry } from '../lib/definitions';
 import { revalidatePath } from 'next/cache';
+import dayjs from 'dayjs';
 
 const sql = connect();
 
@@ -50,4 +51,38 @@ export async function updateWaitingListEntryState(id: string, state: string) {
   revalidatePath("/");
 }
 
+export async function updateWaitingListEntryOrder(entry: WaitingListEntry, newPosition: number) {
+  if (entry.number === newPosition)
+    return;
+
+  let lowerBound = entry.number;
+  let upperBound = newPosition;
+  let direction = '- 1';
+
+  if (entry.number > newPosition) {
+    lowerBound = newPosition;
+    upperBound = entry.number;
+    direction = '+ 1';
+  }
+
+  try {
+    await sql.begin(sql => [
+      sql`UPDATE waiting_list_entries
+        SET number = ${newPosition}
+        WHERE id = ${entry.id};`,
+
+      sql`UPDATE waiting_list_entries
+        SET number = number ${sql.unsafe(direction)}
+        WHERE date = ${dayjs(entry.date).format('YYYY-MM-DD')}
+          AND number >= ${lowerBound}
+          AND number <= ${upperBound}
+          AND id != ${entry.id};`,
+    ])
+
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to update WaitingListEntry order.');
+  }
+  revalidatePath('/')
+}
 

@@ -3,7 +3,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { WaitingList, WaitingListEntryForm } from "@/components/waiting-list";
-import { waitingListEntries } from "@/lib/placeholder-data";
 import { fetchWaitingListEntries } from './actions';
 
 export default async function Home({ searchParams }: {
@@ -19,6 +18,12 @@ export default async function Home({ searchParams }: {
   const tomorrow = date.add(1, "day").format("YYYY-MM-DD");
 
   const entries = await fetchWaitingListEntries(dateStr);
+
+  // we build this hash so we can force the WaitingList component to 
+  // re-render when the entries change server side
+  const entriesKey = entries[0]?.id +
+    entries.length +
+    entries.reduce((acc, entry) => acc + (entry.state == "waiting" ? 1 : 0), 0);
 
   return (
     <>
@@ -36,7 +41,7 @@ export default async function Home({ searchParams }: {
           }
         </CardHeader>
         <CardContent>
-          <WaitingList entries={entries} />
+          <WaitingList key={entriesKey} entries={entries} />
         </CardContent>
         <CardFooter>
           {/* show new entry form only for current day */}
