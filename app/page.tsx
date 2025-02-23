@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { WaitingList, WaitingListEntryForm } from "@/components/waiting-list";
 import { waitingListEntries } from "@/lib/placeholder-data";
+import { fetchWaitingListEntries } from './actions';
 
 export default async function Home({ searchParams }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -13,8 +14,11 @@ export default async function Home({ searchParams }: {
     date = dayjs();
   }
 
+  const dateStr = date.format("YYYY-MM-DD");
   const yesterday = date.subtract(1, "day").format("YYYY-MM-DD");
   const tomorrow = date.add(1, "day").format("YYYY-MM-DD");
+
+  const entries = await fetchWaitingListEntries(dateStr);
 
   return (
     <>
@@ -32,11 +36,11 @@ export default async function Home({ searchParams }: {
           }
         </CardHeader>
         <CardContent>
-          <WaitingList entries={waitingListEntries} />
+          <WaitingList entries={entries} />
         </CardContent>
         <CardFooter>
           {/* show new entry form only for current day */}
-          {date.format("YYYY-MM-DD") == dayjs().format("YYYY-MM-DD") && (
+          {dateStr == dayjs().format("YYYY-MM-DD") && (
             <WaitingListEntryForm />
           )}
         </CardFooter>
