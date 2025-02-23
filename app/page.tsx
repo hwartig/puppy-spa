@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { WaitingList } from "@/components/waiting-list";
 import { WaitingListDND, WaitingListEntryForm } from "@/components/waiting-list-dnd";
 import { fetchWaitingListEntries } from './actions';
@@ -16,7 +16,9 @@ export default async function Home({ searchParams }: {
 
   const dateStr = date.format("YYYY-MM-DD");
   const yesterday = date.subtract(1, "day").format("YYYY-MM-DD");
+  const prevWeek = date.subtract(7, "day").format("YYYY-MM-DD");
   const tomorrow = date.add(1, "day").format("YYYY-MM-DD");
+  const nextWeek = date.add(7, "day").format("YYYY-MM-DD");
 
   const entries = await fetchWaitingListEntries(dateStr);
 
@@ -29,15 +31,15 @@ export default async function Home({ searchParams }: {
   return (
     <Card>
       <CardHeader>
-        <Link href={"/?date=" + yesterday}>
-          <ChevronLeft />
-        </Link>
+        <Link href={"/?date=" + prevWeek}><ChevronsLeft /></Link>
+        <Link href={"/?date=" + yesterday}><ChevronLeft /></Link>
         <CardTitle className="flex-10/12 text-center">Waiting List for {date.format("DD. MMM YYYY")}</CardTitle>
         {/* show next button only if it's not in the future */}
         {date.add(1, "day") <= dayjs() &&
-          <Link href={"/?date=" + tomorrow}>
-            <ChevronRight />
-          </Link>
+          <Link href={"/?date=" + tomorrow}><ChevronRight /></Link>
+        }
+        {date.add(7, "day") <= dayjs() &&
+          <Link href={"/?date=" + nextWeek}><ChevronsRight /></Link>
         }
       </CardHeader>
       {/* show new entry form only for current day */}
