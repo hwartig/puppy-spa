@@ -26,6 +26,7 @@ import {
 } from '@dnd-kit/sortable';
 
 import { CSS } from '@dnd-kit/utilities';
+import Link from 'next/link';
 
 export function WaitingListDND(props: { entries: WaitingListEntry[] }) {
   // const entries = props.entries;
@@ -128,10 +129,14 @@ export function WaitingListRowDND({ entry }: { entry: WaitingListEntry }) {
         <StateCell id={id} state={state} />
       </TableCell>
       <TableCell>
-        {owner_name}
+        <Link href={`/history/?owner_name=${owner_name}&pet_name=${pet_name}`}>
+          {owner_name}
+        </Link>
       </TableCell>
       <TableCell>
-        {pet_name}
+        <Link href={`/history/?owner_name=${owner_name}&pet_name=${pet_name}`}>
+          {pet_name}
+        </Link>
       </TableCell>
       <TableCell>
         {service}

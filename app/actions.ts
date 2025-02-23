@@ -16,8 +16,21 @@ export async function fetchWaitingListEntries(date: string) {
   }
 }
 
+export async function fetchWaitingListEntriesForPet(owner_name: string, pet_name: string) {
+  try {
+    return await sql<WaitingListEntry[]>`SELECT * FROM waiting_list_entries
+        WHERE lower(owner_name) = ${owner_name.trim().toLowerCase()}
+          AND lower(pet_name) = ${pet_name.trim().toLowerCase()}
+        ORDER BY number ASC`;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch WaitingListEntries.');
+  }
+}
+
 export async function createWaitingListEntry(formData: FormData) {
   try {
+    // TODO: use a sequence to generate the number
     const numberRes = await sql`SELECT MAX(number) from waiting_list_entries where date = CURRENT_DATE`;
     const number = numberRes[0].max + 1;
     const ownerName = formData.get('owner_name') as string;
@@ -26,7 +39,7 @@ export async function createWaitingListEntry(formData: FormData) {
 
     await sql<WaitingListEntry[]>`
         INSERT INTO waiting_list_entries (number, owner_name, pet_name, service)
-        VALUES (${number}, ${ownerName}, ${petName}, ${service})
+        VALUES (${number}, ${ownerName.trim()}, ${petName.trim()}, ${service.trim()})
         RETURNING *;
       `;
 

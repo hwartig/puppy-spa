@@ -27,38 +27,36 @@ export default async function Home({ searchParams }: {
     entries.reduce((acc, entry) => acc + (entry.state == "waiting" ? 1 : 0), 0);
 
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <Link href={"/?date=" + yesterday}>
-            <ChevronLeft />
+    <Card>
+      <CardHeader>
+        <Link href={"/?date=" + yesterday}>
+          <ChevronLeft />
+        </Link>
+        <CardTitle className="flex-10/12 text-center">Waiting List for {date.format("DD. MMM YYYY")}</CardTitle>
+        {/* show next button only if it's not in the future */}
+        {date.add(1, "day") <= dayjs() &&
+          <Link href={"/?date=" + tomorrow}>
+            <ChevronRight />
           </Link>
-          <CardTitle className="flex-10/12 text-center">Waiting List for {date.format("DD. MMM YYYY")}</CardTitle>
-          {/* show next button only if it's not in the future */}
-          {date.add(1, "day") <= dayjs() &&
-            <Link href={"/?date=" + tomorrow}>
-              <ChevronRight />
-            </Link>
-          }
-        </CardHeader>
-        {/* show new entry form only for current day */}
-        {dateStr == dayjs().format("YYYY-MM-DD") ? (
-          <>
-            <CardContent>
-              <WaitingListDND key={entriesKey} entries={entries} />
-            </CardContent>
-            <CardFooter>
-              <WaitingListEntryForm />
-            </CardFooter>
-          </>
-        ) : (
-          <>
-            <CardContent>
-              <WaitingList key={entriesKey} entries={entries} />
-            </CardContent>
-          </>
-        )}
-      </Card >
-    </>
+        }
+      </CardHeader>
+      {/* show new entry form only for current day */}
+      {dateStr == dayjs().format("YYYY-MM-DD") ? (
+        <>
+          <CardContent>
+            <WaitingListDND key={entriesKey} entries={entries} />
+          </CardContent>
+          <CardFooter>
+            <WaitingListEntryForm />
+          </CardFooter>
+        </>
+      ) : (
+        <>
+          <CardContent>
+            <WaitingList key={entriesKey} entries={entries} />
+          </CardContent>
+        </>
+      )}
+    </Card >
   );
 }
