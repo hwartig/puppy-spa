@@ -15,6 +15,7 @@ import {
   DragEndEvent,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   closestCenter,
   useSensor,
   useSensors,
@@ -36,6 +37,7 @@ export function WaitingListDND(props: { entries: WaitingListEntry[] }) {
 
   const sensors = useSensors(
     useSensor(PointerSensor),
+    useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -121,7 +123,7 @@ export function WaitingListRowDND({ entry }: { entry: WaitingListEntry }) {
           size={"sm"}
           {...attributes}
           {...listeners}
-          className="cursor-grab"
+          className="cursor-grab touch-manipulation"
         >
           <GripHorizontal />
         </Button>
